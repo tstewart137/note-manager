@@ -7,18 +7,17 @@ import { addNote } from "store/notes/notes-slice";
 export function NoteCreate(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
-  const submit = async (formValues) => {
+  async function createNote(formValues) {
     const createdNote = await NoteAPI.create({
       ...formValues,
       created_at: new Date().toLocaleDateString(),
     });
     dispatch(addNote(createdNote));
     navigate("/");
-  };
+  }
   return (
     <>
-      <NoteForm title="New note" onSubmit={submit} />
+      <NoteForm title="Create a note" onSubmit={createNote} />
     </>
   );
 }

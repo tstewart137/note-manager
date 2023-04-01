@@ -1,11 +1,12 @@
-import { ButtonPrimary } from "components/ButtonPrimary/ButtonPrimary";
-import { FieldError } from "components/FieldError/FieldError";
-import { useState } from "react";
-import { PencilFill, TrashFill } from "react-bootstrap-icons";
-import { ValidatorService } from "services/validator";
 import s from "./style.module.css";
+import { PencilFill, TrashFill } from "react-bootstrap-icons";
+import { ButtonPrimary } from "components/ButtonPrimary/ButtonPrimary";
+import { useEffect, useState } from "react";
+import { ValidatorService } from "services/validator";
+import { FieldError } from "components/FieldError/FieldError";
+import { noteReducer } from "store/notes/notes-slice";
 
-const VALIDATOR = {
+const VALIDATORS = {
   title: (value) => {
     return ValidatorService.min(value, 3) || ValidatorService.max(value, 20);
   },
@@ -14,57 +15,53 @@ const VALIDATOR = {
   },
 };
 
-export function NoteForm({ 
-  title, 
-  onClickEdit, 
-  onClickDelete,
-   onSubmit,
-   note,
-   isEditable = true
-  }) {
-  const [formValues, setFormValues] = useState({ 
-    title: note?.title,  
-    content: note?.content });
-
-
+export function NoteForm({
+  isEditable = true,
+  note,
+  title,
+  onClickEdit,
+  onClickTrash,
+  onSubmit,
+}) {
+  const [formValues, setFormValues] = useState({
+    title: note?.title || "",
+    content: note?.content || "",
+  });
   const [formErrors, setFormErrors] = useState({
-    title: note?.title? undefined : true, 
-    content: note?.content? undefined : true
-   });
+    title: note?.title ? undefined : "",
+    content: note?.content ? undefined : "",
+  });
 
-  const updateFormValues = (e) => {
-    const name = e.target.name;
-    const value = e.target.value;
+  function hasError() {
+    return Object.values(formErrors).some((error) => error !== undefined);
+  }
+  function updateFormValues(e) {
+    setFormValues({ ...formValues, [e.target.name]: e.target.value });
+    validate(e.target.name, e.target.value);
+  }
 
-    setFormValues({ ...formValues, [name]: value });
-    validate(name, value);
-  };
-
-  const validate = (fieldName, fieldValue) => {
-    setFormErrors({
-      ...formErrors,
-      [fieldName]: VALIDATOR[fieldName](fieldValue),
-    });
-  };
-
-  const hasError = () => {
-    for (const fieldName in formErrors) {
-      if (formErrors[fieldName]) {
-        return true;
-      }
-    }
-    return false;
-  };
+  function validate(fieldName, fieldValue, done) {
+    setFormErrors(
+      {
+        ...formErrors,
+        [fieldName]: VALIDATORS[fieldName](fieldValue),
+      },
+      done
+    );
+  }
   const actionIcons = (
     <>
       <div className="col-1">
         {onClickEdit && <PencilFill onClick={onClickEdit} className={s.icon} />}
       </div>
       <div className="col-1">
-        {onClickDelete && <TrashFill onClick={onClickDelete} className={s.icon} />}
+        {onClickTrash && (
+          <TrashFill onClick={onClickTrash} className={s.icon} />
+        )}
       </div>
     </>
   );
+
   const titleInput = (
     <div className="mb-5">
       <label className="form-label">Title</label>
@@ -73,11 +70,12 @@ export function NoteForm({
         type="text"
         name="title"
         className="form-control"
-        value = {formValues.title}
+        value={formValues.title}
       />
       <FieldError msg={formErrors.title} />
     </div>
   );
+
   const contentInput = (
     <div className="mb-5">
       <label className="form-label">Content</label>
@@ -85,15 +83,15 @@ export function NoteForm({
         onChange={updateFormValues}
         type="text"
         name="content"
-        value={formValues.content}
         className="form-control"
         row="5"
+        value={formValues.content}
       />
       <FieldError msg={formErrors.content} />
     </div>
   );
 
-  const submitBtn = (
+  const submitButton = (
     <div className={s.submit_btn}>
       <ButtonPrimary
         isDisabled={hasError()}
@@ -105,7 +103,7 @@ export function NoteForm({
   );
 
   return (
-    <div className={s.container}>
+    <form className={s.container}>
       <div className="row justify-content-space-between">
         <div className="col-10">
           <h2 className="mb-3">{title}</h2>
@@ -114,9 +112,11 @@ export function NoteForm({
       </div>
       <div className={`mb-3 ${s.title_input_container}`}>
         {isEditable && titleInput}
-      {isEditable ? contentInput : <pre>{note.content}</pre>}
       </div>
-      {onSubmit && submitBtn}
-    </div>
+      <div className="mb-3">
+        {isEditable ? contentInput : <pre>{note.content}</pre>}
+      </div>
+      {onSubmit && submitButton}
+    </form>
   );
 }

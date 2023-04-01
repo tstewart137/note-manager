@@ -1,14 +1,13 @@
 export class ValidatorService {
-    
-    static min(inputValue, min){
-        if (inputValue.length < min) {
-        return `Enter at least ${min} characters`;
+    static min(value, min) {
+      if (value.length < min) {
+        return `Veuillez tapper au moins ${min} lettre(s)`;
+      }
     }
+  
+    static max(value, max) {
+      if (value.length > max) {
+        return `Veuillez tapper au plus ${max} lettre(s)`;
+      }
     }
-
-    static max(inputValue, max){
-        if (inputValue.length > max) {
-        return ` You have exceeded the maximum note length of ${max} characters`;
-    }
-}
-}
+  }
