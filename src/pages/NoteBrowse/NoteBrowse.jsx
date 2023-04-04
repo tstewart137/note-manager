@@ -33,8 +33,8 @@ export function NoteBrowse(props) {
       {noteList?.length === 0 && (
         <div className="d-flex justify-content-center">
           <span>
-            Vous n'avez pas de note, voulez vous en{" "}
-            <Link to="/note/new"> créer une </Link>
+            You don't have any notes yet. Do you want to{" "}
+            <Link to="/note/new"> create one?</Link>
           </span>
         </div>
       )}
