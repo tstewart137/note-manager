@@ -1,5 +1,5 @@
 import { ButtonPrimary } from "components/ButtonPrimary/ButtonPrimary"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import s from './style.module.css'
 import { Input } from "components/Input/Input";
 import { AuthLayout } from "Layouts/AuthLayout/AuthLayout";
@@ -8,18 +8,26 @@ import { useState } from "react";
 import { setUser } from "store/auth/auth-slice";
 import { useDispatch } from "react-redux";
 import { AuthAPI } from "api/auth";
+import { toast } from "utils/sweet-alert"; 
 
 export function Signin(){
 
     const [email, setEmail]=useState("")
     const [password, setPassword]=useState("")
     const dispatch = useDispatch();
+    const navigate= useNavigate();
 
     const submit= async (e)=>{
+        try{
         e.preventDefault();
         const  user = await AuthAPI.Signin(email, password)
         dispatch(setUser(user));
-      
+        await toast("success", "Welcome")
+        navigate("/")
+        } catch {
+            
+            toast("error", e.message)
+        }
 
     }
     const form = (

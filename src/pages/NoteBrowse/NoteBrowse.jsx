@@ -1,5 +1,4 @@
 import { SearchBar } from "components/SearchBar/SearchBar";
-import { TextCard } from "components/TextCard/TextCard";
 import { NoteList } from "containers/NoteList/NoteList";
 import { useState } from "react";
 import { useSelector } from "react-redux";
@@ -7,7 +6,7 @@ import { Link } from "react-router-dom";
 
 export function NoteBrowse(props) {
   const [searchText, setSearchText] = useState("");
-  const noteList = useSelector((store) => store.NOTE.noteList);
+  const noteList = useSelector((store) => store.notesSlice.noteList);
   const filteredList = noteList.filter((note) => {
     const containsTitle = note.title
       .toUpperCase()

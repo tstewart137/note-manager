@@ -9,27 +9,29 @@ import { NoteCreate } from "pages/NoteCreate/NoteCreate";
 import { Note } from "pages/Note/Note";
 import { PageNotFound } from "pages/PageNotFound/PageNotFound";
 import { App } from "App";
-import { Signin} from "pages/Signin/Signin";
+import { Signin } from "pages/Signin/Signin";
 import { Signup } from "pages/Signup/Signup";
-import { FirebaseApp } from "services/firebase";
+import { FirebaseApp } from "utils/firebase";
 
-FirebaseApp.init()
+FirebaseApp.init();
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
-  <Provider store={store}>
-    <BrowserRouter>
-      <Routes>
-      <Route path="/signin" element={<Signin />} />
+  <StrictMode>
+    <Provider store={store}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/signin" element={<Signin />} />
           <Route path="/signup" element={<Signup />} />
-        <Route path="/" element={<App />}>
-          <Route path="/" element={<NoteBrowse />} />
-          <Route path="/note/:noteId" element={<Note />} />
-          <Route path="/note/new" element={<NoteCreate />} />
-          <Route path="*" element={<PageNotFound />} />
-        </Route>
-      </Routes>
-    </BrowserRouter>
-  </Provider>
+          <Route path="/" element={<App />}>
+            <Route path="/" element={<NoteBrowse />} />
+            <Route path="/note/:noteId" element={<Note />} />
+            <Route path="/note/new" element={<NoteCreate />} />
+            <Route path="*" element={<PageNotFound />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </Provider>
+  </StrictMode>
 );

@@ -1,17 +1,18 @@
 
-import { FirebaseApp } from "services/firebase";
-import { signOut, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
-
+import { FirebaseApp } from "utils/firebase";
+import { signOut, 
+    signInWithEmailAndPassword, 
+    createUserWithEmailAndPassword } 
+    from "firebase/auth";
 
 export class AuthAPI {
-
     static async signin(email, password) {
         const response = await signInWithEmailAndPassword(
             FirebaseApp.auth, 
             email, 
             password
             );
-        return response.user.toJSON()
+        return response.user.toJSON();
     }
 
     static async signup(email, password) {
@@ -20,12 +21,10 @@ export class AuthAPI {
              email,
               password
               );
-        return response.user.toJSON()
+        return response.user.toJSON();
     }   
 
-    
-
     static async signout() {
-        signOut(FirebaseApp.auth)
+        signOut(FirebaseApp.auth);
     }
 }
