@@ -1,10 +1,10 @@
 import s from "./style.module.css";
 import { PencilFill, TrashFill } from "react-bootstrap-icons";
 import { ButtonPrimary } from "components/ButtonPrimary/ButtonPrimary";
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import { ValidatorService } from "utils/validator";
 import { FieldError } from "components/FieldError/FieldError";
-import { noteReducer } from "store/notes/notes-slice";
+//import { noteReducer } from "store/notes/notes-slice";
 
 const VALIDATORS = {
   title: (value) => {
