@@ -8,11 +8,14 @@ import s from "./style.module.css";
 import { setUser } from "store/auth/auth-slice";
 import { useDispatch } from "react-redux";
 import { toast } from "utils/sweet-alert";
+
+
 export function Signin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  
   const submit = async (e) => {
     e.preventDefault();
     try {

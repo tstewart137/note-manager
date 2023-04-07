@@ -1,4 +1,4 @@
-import { noteReducer } from "store/notes/notes-slice";
+import { notesReducer } from "store/notes/notes-slice";
 import { authReducer } from "store/auth/auth-slice";
 
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
@@ -15,7 +15,7 @@ import {
 } from "redux-persist";
 
 const rootReducer = combineReducers({
-  notesSlice: noteReducer,
+  notesSlice: notesReducer,
   authSlice: authReducer,
 });
 
@@ -41,8 +41,3 @@ const store = configureStore({
 const persistor = persistStore(store);
 
 export { store, persistor };
-
-
-
-
-   
